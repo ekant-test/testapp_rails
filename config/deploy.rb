@@ -1,7 +1,7 @@
 # Change these
-server '178.62.88.94', port: 7171, roles: [:web, :app, :db], primary: true
+server '54.197.10.24', port: 7171, roles: [:web, :app, :db], primary: true
 
-set :repo_url,        'git@github.com:sheharyarn/testapp_rails.git'
+set :repo_url,        'git@github.com:ekant-test/testapp_rails.git'
 set :application,     'testapp'
 set :user,            'deploy'
 set :puma_threads,    [4, 16]
