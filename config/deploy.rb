@@ -1,5 +1,5 @@
 # Change these
-server '54.197.10.24', port: 22, roles: [:web, :app, :db], primary: true
+server '10.0.2.22', port: 22, roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'git@github.com:ekant-test/testapp_rails.git'
 set :application,     'testapp'
