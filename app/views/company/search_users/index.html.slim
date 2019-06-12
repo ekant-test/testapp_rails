@@ -1,0 +1,71 @@
+= content_for :js_pages
+  = javascript_include_tag 'company/search_names', 'data-turbolinks-track' => true
+.container-fluid.body
+  .row
+    .col-lg-6.col-lg-offset-3.col-md-10.col-md-offset-1
+      h4.sub-header
+        | Search
+      ul.nav.nav-tabs[role="tablist"]
+        li[role="presentation"]
+          = link_to company_search_names_path, method: :get do
+            span.hidden-xs
+              | Search for 
+            | Names
+        li.active[role="presentation"]
+          = link_to company_search_users_path, method: :get do
+            span.hidden-xs
+              | Search for 
+            | Users
+      .panel.b-t-none.b-r-t-none
+        .panel-body
+          #jsearch-recordings
+            .form-group
+              = hidden_field_tag :record_type, 'User'
+              select.form-control.jselect-language[data-width="100%" tabindex="1" data-live-search="true"]
+            .form-group
+              .input-group
+                .input-group-addon#search-action
+                  i.glyphicon.glyphicon-search
+                input.form-control#name[type="text" placeholder="Search for User" name="name"]
+                .input-group-addon#clear-text
+                  i.glyphicon.glyphicon-remove
+            ul.list-group.names.m-t-15
+          .container_recordings
+= render "layouts/common/pushy"
+= render "layouts/common/billing_modal"
+#confirm.modal.fade[tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"]
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.btn.btn-sm.btn-default.pull-right[type="button" data-dismiss="modal" aria-label="Close"]
+          span[aria-hidden="true"]
+            | ×
+        h3#myModalLabel.modal-title
+          | Attention
+      .modal-body
+        .row
+          .col-xs-12.text-center
+            = image_tag "HTML/images/icon-warning.png", height: "100"
+            h3.m-t-20.m-b-20
+              | Are you sure you want to do this?
+            p.m-t-20.m-b-20.lead
+              | Are you sure you wish to do this. This action can not be undone. Please confirm below if you would like to proceed.
+            a.m-t-10.m-b-10[href="" data-dismiss="modal"]
+              | Confirm & Proceed
+            .clearfix
+            a.m-t-20.m-b-20.btn.btn-lg.btn-green[type="button" data-dismiss="modal"]
+              | No I don't want to do this
+
+script#languages-template[type="text/template"]
+  | <%_.each(languages, function(language) { %>
+  |   <option value='<%- language.name %>' ><%- language.name %></option>
+  | <% }) %>
+
+script#recordings-template[type="text/template"]
+  |<div class="result-search">
+  |  <p class="list-group-item col-xs-12" href="#"> <%- name %> <span class="small text-muted"><%- native_name %></span><span class="btn btn-default pull-right"><i class="glyphicon glyphicon-volume-down" data-audio="<%- record_url %>"></i></span><span class="center-block small text-muted"> <%- language %> </span></p>
+  |</div>
+  |<br>
+
+javascript:
+  $(function () { $('[data-toggle="tooltip"]').tooltip() })

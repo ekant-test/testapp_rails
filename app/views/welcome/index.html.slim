@@ -1,0 +1,258 @@
+= javascript_include_tag 'HTML/plugins/scrolling-nav/scrolling-nav.js', 'data-turbolinks-track' => true
+= javascript_include_tag 'company/search_names', 'data-turbolinks-track' => true
+
+.container-fluid.intro
+  .container
+    .row
+      .col-sm-7
+        h1.p-b-20.m-t-50
+          | “There is no sweeter sound to one’s ear than the sound of his name.”
+        p[clas="small"]
+          i
+            | Dale Carnegie
+        i.italic.white
+          | But: properly pronounced please!
+        .m-t-30
+          a href='https://itunes.apple.com/us/app/nomen/id1209894682?ls=1&mt=8'
+            = image_tag "HTML/images/website/logo-app-store.png", height: "50"
+          a href='https://play.google.com/store/apps/details?id=audio.nomen'
+            = image_tag "HTML/images/website/logo-google-play.png", height: "50"
+      .col-lg-5
+        = image_tag "HTML/images/website/iphone.png", height: "50", class: 'img-responsive'
+
+.container-fluid.body
+  .row
+    .col-lg-6.col-lg-offset-3.col-md-10.col-md-offset-1
+      ul.nav.nav-tabs role="tablist" 
+        li.active role="presentation"
+          a.jsearch_tab#search-name data-toggle="tab" href="#search-name" role="tab"
+            span.hidden-xs> Search for
+            | Names
+        li role="presentation"
+          a.jsearch_tab#search-user data-toggle="tab" href="#search-user" role="tab"
+            span.hidden-xs> Search for
+            | Users
+      .panel.b-t-none.b-r-t-none
+        .panel-body
+          #jsearch-recordings
+            .form-group
+              select.form-control.jselect-language[data-width="100%" tabindex="1" data-live-search="true"]
+            .form-group
+              .input-group
+                .input-group-addon#search-action
+                  i.glyphicon.glyphicon-search
+                = hidden_field_tag :record_type, 'name'
+                input.form-control#name[type="text" placeholder="Search for generic recording" name="name"]
+                .input-group-addon#clear-text
+                  i.glyphicon.glyphicon-remove
+            ul.list-group.names.m-t-15
+          .container_recordings
+#confirm.modal.fade[tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"]
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.btn.btn-sm.btn-default.pull-right[type="button" data-dismiss="modal" aria-label="Close"]
+          span[aria-hidden="true"]
+            | ×
+        h3#myModalLabel.modal-title
+          | Attention
+      .modal-body
+        .row
+          .col-xs-12.text-center
+            = image_tag "HTML/images/icon-warning.png", height: "100"
+            h3.m-t-20.m-b-20
+              | Are you sure you want to do this?
+            p.m-t-20.m-b-20.lead
+              | Are you sure you wish to do this. This action can not be undone. Please confirm below if you would like to proceed.
+            a.m-t-10.m-b-10[href="" data-dismiss="modal"]
+              | Confirm & Proceed
+            .clearfix
+            a.m-t-20.m-b-20.btn.btn-lg.btn-green[type="button" data-dismiss="modal"]
+              | No I don't want to do this
+
+script#languages-template[type="text/template"]
+  | <%_.each(languages, function(language) { %>
+  |   <option value='<%- language.name %>' ><%- language.name %></option>
+  | <% }) %>
+
+script#recordings-template[type="text/template"]
+  |<div class="result-search">
+  |  <p class="list-group-item col-xs-12" > <%- name %> <span class="btn btn-default pull-right"><i class="glyphicon glyphicon-volume-down" data-audio="<%- record_url %>"></i></span><span class="center-block small text-muted"><%- language %></span></p>
+  |  <div class="clearfix"></div>
+  - if current_user.present?
+    |  <a class="list-group-item col-xs-6 list-group-item-danger text-center b-r-none upvote" data-id="<%- id %>"
+    |  href="javascript:;"><% if (upvoted) {%> Upvoted <% }else {%><i class="glyphicon glyphicon-arrow-up""></i>Upvote <% } %> </a>
+    |  <a class="list-group-item col-xs-6 list-group-item-danger text-center report" data-id="<%- id %>"
+    |  href="javascript:;"><% if (reported) { %> Reported <% }else { %><i class="glyphicon glyphicon-remove"></i>Report <% } %></a>
+  |  <div class="clearfix"></div>
+  |</div>
+  |<br>
+
+
+.container-fluid.four
+  .container
+    .row
+      .col-md-12.text-center
+        p.m-b-30
+          | In a more and more globalized world, every day we are confronted with people from different countries, using different languages and even different alphabets. How could we possibly pronounce their names properly?
+        p.italic
+          | Nomen (plural Nomina, Latin for “Name”) helps you achieve exactly that!
+
+.container-fluid.one
+  .container
+    .row
+      .col-md-8.col-md-offset-4.m-b-30
+        = image_tag "HTML/images/website/icon-01.png", height: "140", class: 'pull-left'
+        h4.m-t-10
+          | Contribute
+        p
+          | It is an App created for global citizens and it nurtures from your input. You can contribute by recording first names in your native language and alphabet, therefore creating a global database that helps you and others pronounce names properly.
+      .col-md-8.col-md-offset-4.m-b-30
+        = image_tag "HTML/images/website/icon-02.png", height: "140", class: 'pull-left'
+        h4.m-t-10
+          | Native Recordings
+        p
+          | Why can you only do recordings in your native language (mother tongue)? It is paramount that all recordings are original and hence properly pronounced and we can only do this in our native language. Even people that were lucky enough to be raised bilingual have a natural first language.
+      .col-md-8.col-md-offset-4.m-b-30
+        = image_tag "HTML/images/website/icon-03.png", height: "140", class: 'pull-left'
+        h4.m-t-10
+          | Names
+        p
+          | You can record the names of places, rivers, monuments, etc., helping others to get around in your country. And you can use their recordings when you travel and address them properly.
+      .col-md-8.col-md-offset-4.m-b-30
+        = image_tag "HTML/images/website/icon-04.png", height: "140", class: 'pull-left'
+        h4.m-t-10
+          | Voice Print
+        p
+          | You have the option to create your unique “voice-print”. By recording your full name Nomen converts it into a QR code, which you can use on your business card, web site, etc. Other users can simply retrieve it by scanning the QR code using Nomen. With Nomen we get to know each other better.
+
+
+.container-fluid.five
+  .container
+    .row
+      .col-md-9.m-b-30
+        = image_tag "HTML/images/website/icon-05.png", height: "140"
+        h2.m-t-10
+          | Company Accounts
+        p
+          | A great corporate culture starts with mutual respect. Respect for diversity in all possible aspects – a challenging task for every employer.
+        p
+          | Your organisation might have co-workers from different countries, using different languages and even different alphabets. How could anybody pronounce all their names properly?
+        p
+          | How does it work? When choosing Nomen your employees are able to record their personal names. These individual recordings generate a unique QR code that can be printed on business cards or displayed elsewhere. Using Nomen everybody can listen to their names. You can easily link these recordings to e.g. your corporate directory and when you search for that person you can listen to his/her name before you get in touch.
+        p
+          | You also have the option to subscribe for your customers. Imagine the effect when they call or come to your venue and are addressed properly!
+        p
+          | The Nomen App is available for Android and iOS. Please use them for recording, listening and scanning QR codes.
+        p
+          | On this page you can search for and listen to names, as well as manage your corporate subscription.
+
+.container-fluid.register
+  .container
+    .row
+      .col-md-8.col-md-offset-2
+        #claim.box
+          h3.text-center
+            | Create Company Account
+          hr
+          form#register-company-user
+            .row
+              .col-md-6.m-b-10
+                input.form-control name="company_name" placeholder=("Company name") style="width:" tabindex="3" type="text" value="" /
+              .col-md-6.m-b-10
+                input.form-control name="name" placeholder=("First name") style="width:" tabindex="4" type="text" value="" /
+              .col-md-6.m-b-10
+                input.form-control name="sur_name" placeholder="Surname" tabindex="5" type="text" value="" /
+              .col-md-6.m-b-10
+                input.form-control autocomplete="off" name="email" placeholder=("Email address") tabindex="6" type="text" value="" /
+              .col-md-6.m-b-10
+                input.form-control name="password" placeholder="Password" tabindex="7" type="password" /
+              .col-md-6.m-b-10
+                input.form-control autocomplete="off" name="password_confirmation" placeholder=("Confirm Password") tabindex="8" type="password"
+              .col-md-12.m-b-10.p-t-10
+                .checkbox
+                  label
+                    input tabindex="9" type="checkbox" name="term"
+                    = hidden_field_tag :is_web, true
+                    | Please read and accept 
+                    = link_to 'terms & conditions ', 'terms.pdf'
+                    | before sending.
+                a.btn.btn-green.btn-block.m-t-20.jbtn-create-company-user href="javascript:;" tabindex="10"  Complete
+
+/! Modal LOGIN
+#login.modal.fade aria-hidden="true" role="dialog" 
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.btn.btn-default.pull-right aria-label="Close" data-dismiss="modal" type="button" 
+          span aria-hidden="true"  &times;
+        h3.m-b-none Login to your account
+      .modal-body
+        .row
+          .tab-content
+            #login-details.tab-pane.active role="tabpanel" 
+              .col-xs-12
+                form#jlogin-form method="POST" 
+                  .form-group
+                    input.form-control name="email" id="jemail" placeholder=("Email address") tabindex="11" type="email" /
+                  /! /.form-group
+                  .form-group
+                    input.form-control name="password" id="jpassword" placeholder="Password" tabindex="12" type="password" /
+                  /! /.form-group
+                  .form-inline.m-b-20
+                    .form-group
+                      a.btn.btn-blue.m-r-20.jbtn-login tabindex="13" type="submit"  Login
+                  .line.line-dashed
+                  p
+                    | Please request a password reset email if you
+                    a aria-controls="tab-one" data-toggle="tab" href="#forgot-password" role="tab"  forgot your password
+            #forgot-password.tab-pane role="tabpanel" 
+              .col-xs-12
+                form#forgot-password-form
+                  .form-group
+                    input.form-control name="email" placeholder=("Email address") tabindex="14" type="email" /
+                  /! /.form-group
+                  .form-group.m-b-20
+                    a.btn.btn-blue#forgot-password-btn href="javascript:;" role="tab" tabindex="15"  Email password reset link
+                    a.btn.btn-default data-toggle="tab" href="#login-details" role="tab" tabindex="16"  Cancel return to login
+                p We will send you an email which contains a link where you can click and reset your password.
+            #forgot-password-sent.tab-pane role="tabpanel" 
+              .col-xs-12.text-center
+                = image_tag "HTML/images/icon-email-sent.png", height: "100", class: 'm-b-20'
+                p.text-left We have sent you an email which contains a link where you can click and reset your password. Please check you junkbox incase you don't receive it.
+                a.btn.btn-default.pull-left aria-label="Close" data-dismiss="modal"  Dismiss
+#audio-area
+
+javascript:
+  $(document).ready(function(){
+    $('.open-modal-login').on("click", function(){
+      $('#login').find('#forgot-password-sent').removeClass('active')
+      $('#login').find('#forgot-password').removeClass('active')
+      $('#login').find('#login-details').addClass('active')
+      $('#login').modal('show')
+    })
+    $('.specialty').selectpicker({
+      style: 'btn-default',
+      size: 12,
+      title: 'Select Specialty'
+    });
+    $('.suburb').selectpicker({
+      style: 'btn-default',
+      size: 12,
+      title: 'Select Suburb of Principal Practice'
+    });
+    $('.language').selectpicker({
+      style: 'btn-default btn-lg',
+      size: 12,
+      title: 'Select language'
+    });
+    $('.state').selectpicker({
+      style: 'btn-default',
+      size: 12,
+      title: 'Select State'
+    });
+    $('#myTabs a').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show')
+    })
+  })

@@ -1,16 +1,11 @@
 class ApplicationController < ActionController::Base
-  	protect_from_forgery
+  # Prevent CSRF attacks by raising an exception.
+  # For APIs, you may want to use :null_session instead.
+  protect_from_forgery with: :exception
 
-  	def check_authority!
-		#CUSTOM AUTHORITY FUNCTION
-  	end
-
-  	def render_404
-    	render :template => '../../public/404.html', :layout => false, :status => :not_found
-  	end
-
-  	def render_401
-    	render :template => '../../public/401.html', :layout => false, :status => 401
-  	end
-
+  def rescue_stripe_errors(e)
+    body = e.json_body rescue e
+    err  = body[:error][:message] rescue e.message
+    flash[:error] = err
+  end
 end

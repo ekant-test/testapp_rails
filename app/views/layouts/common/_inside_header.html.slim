@@ -1,0 +1,14 @@
+nav.navbar.navbar-inverse.navbar-fixed-top
+  .container-fluid
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-10.col-md-offset-1
+        - if current_user.present?
+          .pull-right
+            a.btn.btn-default.cart href="javascript:;" title="menu"  Upgrade
+            a.btn.btn-red.navbar-btn.jbtn-logout
+              i.glyphicon.glyphicon-log-out
+        .navbar-header
+          = link_to company_users_path, method: :get, class: "hidden-xs" do
+            = image_tag "HTML/images/logo-light.png", class: "m-t-8", height: "35"
+          = link_to company_users_path, method: :get, class: "visible-xs" do
+            = image_tag "HTML/images/logo-xs.png", class: "m-t-8", height: "35"

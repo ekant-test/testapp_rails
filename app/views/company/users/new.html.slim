@@ -1,0 +1,119 @@
+= content_for :js_pages
+  = javascript_include_tag 'company/users.new', 'data-turbolinks-track' => true
+.container-fluid.body
+  .row
+    .col-lg-6.col-lg-offset-3.col-md-10.col-md-offset-1
+      h4.sub-header
+        | MY ACCOUNT
+      ul.nav.nav-tabs[role="tablist"]
+        li.jtab-company-users[role="presentation"]
+          = link_to "Users", company_users_path, method: :get
+        li.jtab-new-company-user[role="presentation"]
+          = link_to "Add Users", new_company_user_path, method: :get
+        li.jtab-company-account[role="presentation"]
+          = link_to "Account", company_account_index_path, method: :get
+      .panel.b-t-none.b-r-t-none
+        .panel-body
+          = render partial: "layouts/common/notice"
+          h4
+            | Add Individual Contacts
+          p
+            | You can register individual Users for your Company Account here.
+          - if current_user.plans.blank?
+            .alert.alert-danger.alert-dismissible.m-t-20[role="alert"]
+              button.close[type="button" data-dismiss="alert" aria-label="Close"]
+                span[aria-hidden="true"]
+                  | ×
+              strong
+                | Warning!
+              |  Your current plan doesn't allow this many users. Please see "My Plan" for more information. 
+          .clearfix
+          .line.line-dashed
+          .jcontainerFormAddUser
+
+          .form-group
+              a.btn.btn-green.jbtn-save-users[href="javascript:;"]
+                | Save
+              a.btn.btn-default[href="javascript:;" role="tab" data-dismiss="modal" tabindex="2"]
+                | Cancel
+
+          h4.m-t-30
+            | Import contacts
+          = form_tag import_users_company_users_path, multipart: true do
+            p
+              | You can import your Company Users by uploading a CSV file (
+              = link_to "see sample", download_template_company_users_path, method: :get
+              |).
+              br
+              | ATTENTION: this will overwrite your current User list! Always import all authorized Users.
+            .form-group
+              .fileinput.fileinput-new.input-group[data-provides="fileinput"]
+                .form-control[data-trigger="fileinput"]
+                  i.glyphicon.glyphicon-file.fileinput-exists
+                  span.fileinput-filename
+                span.input-group-addon.btn.btn-default.btn-file
+                  span.fileinput-new
+                    | Select file
+                  span.fileinput-exists
+                    | Change
+                  input[type="file" name="file"]
+                  = file_field_tag :file
+                a.input-group-addon.btn.btn-default.fileinput-exists[href="#" data-dismiss="fileinput"]
+                  | Remove
+            / .progress
+            /   .progress-bar.progress-bar-success.progress-bar-striped[role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%"]
+            /     span.sr-only
+            /       | 40% Complete (success)
+            .form-group
+              = submit_tag "Upload", class: 'btn btn-green'
+                | Upload
+              a.btn.btn-default[href="#" role="tab" data-dismiss="modal" tabindex="2"]
+                | Cancel
+
+= render "layouts/common/pushy"
+= render "layouts/common/billing_modal"
+#confirm.modal.fade[tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"]
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.btn.btn-sm.btn-default.pull-right[type="button" data-dismiss="modal" aria-label="Close"]
+          span[aria-hidden="true"]
+            | ×
+        h3#myModalLabel.modal-title
+          | Attention
+      .modal-body
+        .row
+          .col-xs-12.text-center
+            = image_tag "HTML/images/icon-warning.png", height: "100"
+            h3.m-t-20.m-b-20
+              | Are you sure you want to do this?
+            p.m-t-20.m-b-20.lead
+              | Are you sure you wish to do this. This action can not be undone. Please confirm below if you would like to proceed.
+            a.m-t-10.m-b-10[href="" data-dismiss="modal"]
+              | Confirm & Proceed
+            .clearfix
+            a.m-t-20.m-b-20.btn.btn-lg.btn-green[type="button" data-dismiss="modal"]
+              | No I don't want to do this
+
+script#company-add-form-create-users-template[type="text/template"]
+  |<div class="form-inline jform-create-user" style="padding-bottom: 20px;">
+  |  <div class="form-group">
+  |    <input type="" class="form-control name" placeholder="Name">
+  |  </div>
+  |  <div class="form-group">
+  |    <input type="" class="form-control sur_name" placeholder="Surname">
+  |  </div>
+  |  <div class="form-group">
+  |    <input type="email" class="form-control email" placeholder="Email">
+  |  </div>
+  |  <div class="form-group">
+  |    <a class="btn btn-default jbtn-add" href="javascript:;">add</a>
+  |  </div>
+  |</div>
+javascript:
+  $(function () { $('[data-toggle="tooltip"]').tooltip() })
+  $('.language').selectpicker({
+    style: 'btn-default',
+    size: 12,
+    title: 'Select language'
+  });

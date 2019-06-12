@@ -1,0 +1,37 @@
+.container-fluid.body
+  .row
+    .col-lg-8.col-lg-offset-2.col-md-12
+      h4.sub-header
+        | NOMEN ADMIN SETTING
+      = render partial: "layouts/admin/header_tab", locals: {a: 1}
+      .panel.b-t-none.b-r-t-none
+        .panel-body
+          = form_tag admin_setting_path(@setting), method: :put do
+            h4
+              | Setting
+            .clearfix
+            - if flash[:error].present?
+                br
+                .alert.alert-danger
+                  = flash[:error]
+            - if flash[:notice].present?
+                br
+                .alert.alert-info
+                  = flash[:notice]
+            .line.line-dashed
+            .clearfix
+            .form-group.has-success
+              .col-md-3
+                | Show/Hide company code text
+              .col-md-1
+                label.custom-control.custom-checkbox
+                  = radio_button_tag 'show_company_text', true, @setting.show_company_text == true
+                  span.custom-control-indicator
+                  span.custom-control-description  Show
+                .clearfix
+                label.custom-control.custom-checkbox
+                  = radio_button_tag 'show_company_text', false, @setting.show_company_text == false
+                  span.custom-control-indicator
+                  span.custom-control-description  Hide
+            .clearfix
+            = submit_tag "Update", class: 'btn btn-green m-b-10'

@@ -1,0 +1,12 @@
+nav.navbar.navbar-inverse.navbar-fixed-top
+  .container-fluid
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-12
+        .pull-right
+          = link_to destroy_user_session_path, method: :delete, class: 'btn btn-red navbar-btn' do
+            i.glyphicon.glyphicon-log-out
+        .navbar-header
+          = link_to admin_users_url, method: :get, class: 'hidden-xs' do
+            = image_tag "HTML/images/logo-light.png", class: "m-t-8", height: "35"
+          = link_to admin_root_url, method: :get, class: 'visible-xs' do
+            = image_tag "HTML/images/logo-xs.png", class: "m-t-8", height: "35"

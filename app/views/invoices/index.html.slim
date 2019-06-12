@@ -1,0 +1,77 @@
+.container
+  .panel
+    .panel-body
+      .row
+        .col-lg-12.m-b-40.m-t-30
+          .col-sm-6
+            = image_tag "HTML/images/logo-dark.png", width: "150", class: "m-t-20"
+          .col-sm-6.text-right
+            p.h1
+              strong
+                | TAX INVOICE
+            span.h4.m-l-10
+              span.small
+                | date:
+              = Time.at(@invoice.webhooks_delivered_at).strftime("%d.%m.%Y")
+            span.h4
+              span.small
+                | Inv. No:
+              |  #234
+      .clearfix
+      .col-sm-6
+        .box.m-b-20.m-t-20
+          strong
+            | Nomen.Audio Pty Ltd
+          br
+          |  1608/594 St Kilda Rd Melbourne 3004
+          br
+          |  Email: service@nomen.audio
+          br
+          |  ACN: 619 804 438
+          br
+          |  ABN: 71 619 804 438
+      .col-sm-6.text-right
+        .box.m-b-20.m-t-20
+          strong
+            = @company.name
+          br
+          = "#{@user.name} #{@user.sur_name}"
+          br
+          |  Email: 
+          = @company.email
+          br
+          |  ACN: 03 9043 8560
+      .col-sm-12.m-t-30.m-b-50
+        .table-responsive
+          table.table.table-curved
+            thead
+              tr
+                th
+                  | Item
+                th
+                  | Amount
+            tbody
+              tr
+                td
+                  = @invoice.lines.data.first.plan.name
+                td
+                  = number_to_currency @invoice.lines.data.first.plan.amount.to_f/100
+        .clearfix
+        .line.line-dashed
+        .clearfix
+      .col-sm-6.col-sm-offset-6.m-b-30
+        ul.list-group.alt
+          li.list-group-item
+            .row
+              .col-xs-6
+                |  sub total: 
+              .col-xs-6
+                = number_to_currency @invoice.subtotal.to_f/100
+          li.list-group-item.bg-light.lter
+            .row
+              .col-xs-6
+                strong
+                  | TOTAL:
+              .col-xs-6
+                strong
+                  = number_to_currency @invoice.amount_due.to_f/100

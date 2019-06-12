@@ -1,0 +1,122 @@
+.container-fluid.body
+  .row
+    .col-lg-8.col-lg-offset-2.col-md-12
+      h4.sub-header
+        | NOMEN ADMIN
+      = render partial: "layouts/admin/header_tab"
+      .panel.b-t-none.b-r-t-none
+        .panel-body
+          .form-inline.pull-right
+            = search_form_for [:admin, @q] do |f|
+              / select.type[data-width="120px" data-live-search="false"]
+              /   option
+              /     | Show All
+              /   option
+              /     | IAS Apple
+              /   option
+              /     | IAS Google
+              /   option
+              /     | Trial
+              /   option
+              /     | Expired
+              /   option
+              /     | Deactivated
+              = f.select :company_id_eq, Company.all.collect {|p| [ p.name, p.id ] }, { include_blank: "Show All" }, class: 'form-control input-sm'
+              = f.search_field :name_or_email_or_sur_name_or_middle_name_cont, class: 'form-control input-sm', style: "width:150px;", placeholder: "Search"
+              = f.submit "Search", class: 'btn btn-default btn-sm'
+          h4
+            | Users
+          .clearfix
+          .line.line-dashed
+          .clearfix
+          .table-responsive
+            table.table.small
+              thead
+                tr
+                  th[width="180"]
+                    | Company
+                  th
+                    | Name
+                  th
+                    | Middle
+                  th
+                    | Surname
+                  th
+                    | Gender
+                  th
+                    | Native
+                  th
+                    | Email
+                  th
+                    | Registered
+                  / th
+                  /   | Status
+                  / th
+                  /   | Trial End
+                  th
+                    | Delete
+                  th
+                    | Action
+              tbody
+                - @users.each do |user|
+                  - attend_user = AttendUser.find_by(email: user.email, status: true)
+                  - company = attend_user.present? ? attend_user.company : nil
+                  - owner = User.find_by id: company.try(:owner_id)
+                  tr
+                    td
+                      - if company.present?
+                        = link_to company.try(:name), admin_company_path(company)
+                    td
+                      = user.name
+                    td
+                      = user.middle_name
+                    td
+                      = user.sur_name
+                    td
+                      = user.gender ? "Male" : "Female"
+                    td
+                      = user.native_language
+                    td
+                      = user.email
+                    td
+                      = user.created_at
+                    / td
+                    /   = owner.try(:plans).present? ? "Actived" : "Trial"
+                    / td
+                    /   - if owner.present?
+                    /     - plan = owner.plans.actived.oldest_by_expired.first
+                    /     - exprired_date = plan.present? ? plan.date_expire.strftime("%d-%method-%Y") : ''
+                    /     a[id="date-0#{user.id}" href="#" data-type="combodate" data-pk="1" data-url="" data-value="#{exprired_date}" data-title="Select date"]
+                    td
+                      = link_to "Delete", admin_user_path(user), method: :delete, class: 'text-danger', data: {confirm: "Are you sure?"}
+                    td
+                      - if user.locked_at.blank?
+                        = link_to "Deactivate", lock_admin_user_path(user), method: :get, class: 'text-danger', data: {confirm: "Are you sure?"}
+                      - else
+                        = link_to "Activate", unlock_admin_user_path(user), method: :get, class: 'text-success'
+
+#confirm.modal.fade[tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"]
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.btn.btn-sm.btn-default.pull-right[type="button" data-dismiss="modal" aria-label="Close"]
+          span[aria-hidden="true"]
+            | ×
+        h3#myModalLabel.modal-title
+          | Attention
+      .modal-body
+        .row
+          .col-xs-12.text-center
+            = image_tag "HTML/images/icon-warning.png", height: "100"
+            h3.m-t-20.m-b-20
+              | Are you sure you want to do this?
+            p.m-t-20.m-b-20.lead
+              | Are you sure you wish to do this. This action can not be undone. Please confirm below if you would like to proceed.
+            a.m-t-10.m-b-10[href="" data-dismiss="modal"]
+              | Confirm & Proceed
+            .clearfix
+            a.m-t-20.m-b-20.btn.btn-lg.btn-green[type="button" data-dismiss="modal"]
+              | No I don't want to do this
+
+script
+  |  $('.type').selectpicker({ style: 'btn-default btn-sm', size: 12, title: 'Select Type' }); $('.company').selectpicker({ style: 'btn-default btn-sm', size: 12, title: 'Select Company' }); $(function(){ $('#date-01').editable({ format: 'DD-MM-YYYY', viewformat: 'DD.MM.YYYY', template: 'D / MMMM / YYYY', placement:'left', }); $('#date-02').editable({ format: 'DD-MM-YYYY', viewformat: 'DD.MM.YYYY', template: 'D / MMMM / YYYY', placement:'left', }); $('#date-03').editable({ format: 'DD-MM-YYYY', viewformat: 'DD.MM.YYYY', template: 'D / MMMM / YYYY', placement:'left', }); $('#date-04').editable({ format: 'DD-MM-YYYY', viewformat: 'DD.MM.YYYY', template: 'D / MMMM / YYYY', placement:'left', }); $('#date-05').editable({ format: 'DD-MM-YYYY', viewformat: 'DD.MM.YYYY', template: 'D / MMMM / YYYY', placement:'left', }); $('#date-06').editable({ format: 'DD-MM-YYYY', viewformat: 'DD.MM.YYYY', template: 'D / MMMM / YYYY', placement:'left', }); }); 
