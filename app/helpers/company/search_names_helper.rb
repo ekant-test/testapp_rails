@@ -1,2 +1,0 @@
-module Company::SearchNamesHelper
-end
